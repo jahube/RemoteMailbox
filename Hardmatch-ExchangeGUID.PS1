@@ -16,7 +16,7 @@ Get-mailbox USER | FL displayname,Exchangeguid,ArchiveGuid      # COPY VALUES
 Exchangeguid
 
 Exchange
-set-remotemailbox user@domain.com -ExchangeGuid "ExchangeGUID"  # PASTE CLOUD Exchangeguid
+set-remotemailbox user@domain.com -ExchangeGuid "CLOUD ExchangeGUID"  # PASTE CLOUD Exchangeguid
 
 AD / DC
 [guid]$MailboxGuid = "CLOUD ExchangeGUID"                       # PASTE CLOUD Exchangeguid
@@ -26,7 +26,7 @@ Set-ADUser $mbx.DistinguishedName -Replace @{msExchMailboxGuid=$MailboxGuid.ToBy
 ArchiveGuid
 
 Exchange
-set-remotemailbox user@domain.com -ArchiveGuid                  # PASTE CLOUD ArchiveGuid
+set-remotemailbox user@domain.com -ArchiveGuid "CLOUD ArchiveGuid"    # PASTE CLOUD ArchiveGuid
 
 AD / DC
 [guid]$Archiveguid = "CLOUD ARCHIVEGUID"                        # PASTE CLOUD ArchiveGuid
