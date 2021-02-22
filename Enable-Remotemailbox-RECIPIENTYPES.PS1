@@ -42,7 +42,7 @@ enable-remotemailbox user@domain.com -archive
 70	ProvisionArchive, Migrated, EquipmentMailbox       = Enable-remotemailbox USER -Equipment AND  Enable-remotemailbox USR -archive (Migrated)  (?)
 81	ProvisionMailbox, DeprovsnArchive,EquipmentMailbox = Enable-remotemailbox USER -Equipment AND Disable-remotemailbox USR -archive
 84	Migrated, DeprovisionArchive, EquipmentMailbox     = Enable-remotemailbox USER -Equipment AND Disable-remotemailbox USR -archive (Migrated)
-97	ProvisionMailbox, SharedMailbox                            = Enable-remotemailbox USER -SHARED (Migrated)
+97	ProvisionMailbox, SharedMailbox                    = Enable-remotemailbox USER -SHARED (*Provision*)
 100	Migrated, SharedMailbox                            = Enable-remotemailbox USER -SHARED (Migrated)
 102	ProvisionArchive, Migrated, SharedMailbox          = Enable-remotemailbox USER -SHARED    AND  Enable-remotemailbox USR -archive (Migrated)
 116	Migrated, DeprovisionArchive, SharedMailbox        = Enable-remotemailbox USER -SHARED    AND Disable-remotemailbox USR -archive (Migrated)
