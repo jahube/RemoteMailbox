@@ -13,23 +13,33 @@ CLOUD
 Get-mailbox USER | FL displayname,Exchangeguid,ArchiveGuid      # COPY VALUES
 
 ----------------------------------------------------------
-Exchangeguid
 
-Exchange
+EXCHANGE GUID
+-------------
+Exchange Management Shell / Onprem
+
 set-remotemailbox user@domain.com -ExchangeGuid "CLOUD ExchangeGUID"  # PASTE CLOUD Exchangeguid
 
-AD / DC
+AD / Domaincontroller
+
 [guid]$MailboxGuid = "CLOUD ExchangeGUID"                       # PASTE CLOUD Exchangeguid
+
+$mbx = get-aduser "USERNAME" -Properties *
 Set-ADUser $mbx.DistinguishedName -Replace @{msExchMailboxGuid=$MailboxGuid.ToByteArray()}
 
 ----------------------------------------------------------
-ArchiveGuid
 
-Exchange
+ARCHIVE GUID
+-------------
+Exchange Management Shell / Onprem
+
 set-remotemailbox user@domain.com -ArchiveGuid "CLOUD ArchiveGuid"    # PASTE CLOUD ArchiveGuid
 
-AD / DC
+AD / Domaincontroller
+
 [guid]$Archiveguid = "CLOUD ARCHIVEGUID"                        # PASTE CLOUD ArchiveGuid
+
+$mbx = get-aduser "USERNAME" -Properties *
 Set-ADUser $mbx.DistinguishedName -Replace @{msExchArchiveGUID=$Archiveguid.ToByteArray()}
 
 ----------------------------------------------------------
