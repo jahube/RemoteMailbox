@@ -32,6 +32,8 @@ $RemoteAdresse = "$alias@tenant.mail.onmicrosoft.com" # from $Alias (Variable)
 
 Set-ADUser $USER -Replace @{TargetAddress="SMTP:$RemoteAdresse"}
 
+Set-ADUser $USER -Add @{ProxyAddresses="SMTP:$mail"}
+
 Set-ADUser $USER -Add @{ProxyAddresses="smtp:$RemoteAdresse"}
 
 Set-ADUser $USER -Replace @{mailNickname="$alias"}
