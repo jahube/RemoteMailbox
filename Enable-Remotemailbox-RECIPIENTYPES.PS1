@@ -4,21 +4,53 @@
 enable-remotemailbox user@domain.com -remoteroutingaddress alias@tenant.mail.onmicrosoft.com
 
 # AD Version 
+
+#Abfragen
 $mbx = get-aduser "USERNAME" -Properties *
-Set-ADUser $mbx.DistinguishedName -Replace @{msExchRemoteRecipientType='3'}   # CHECK TABLE BELOW
-Set-ADUser $mbx.DistinguishedName -Replace @{msExchRecipientDisplayType='-2147483642'}
-Set-ADUser $mbx.DistinguishedName -Replace @{msExchRecipientTypeDetails='2147483648'}
+# ODER / OR
+$mbx = get-aduser -Filter {mail -eq "user.name@domain.com"} -Properties *
+# ODER / OR
+$mbx = get-aduser -Filter {userprincipalname -like "user.name*"} -Properties *
 
-# ENABLE Remotemailbox ARCHIVE                      * (Enable after mailbox - DISABLE before mailbox) 
+# user from above
+$USER = $mbx.DistinguishedName
 
+# SamAccountname / manual
+$USER = "SamAccountname"
+
+Set-ADUser $USER -Replace @{msExchRemoteRecipientType='1'}   # CHECK TABLE BELOW
+Set-ADUser $USER -Replace @{msExchRecipientDisplayType='-2147483642'}
+Set-ADUser $USER -Replace @{msExchRecipientTypeDetails='2147483648'}
+
+$alias = 'user.name'
+
+$mail  = 'user.name@domain.com'
+
+$RemoteAdresse = "$alias@tenant.mail.onmicrosoft.com" # from $Alias (Variable)
+
+# $RemoteAdresse = "user.name@tenant.mail.onmicrosoft.com" #manual
+
+Set-ADUser $USER -Replace @{TargetAddress="SMTP:$RemoteAdresse"}
+
+Set-ADUser $USER -Add @{ProxyAddresses="smtp:$RemoteAdresse"}
+
+Set-ADUser $USER -Replace @{mailNickname="$alias"}
+
+Set-ADUser $USER -Replace @{mail="$mail"}
+
+# ENABLE Remotemailbox ARCHIVE                      * (Enable after mailbox - DISABLE before mailbox)
 enable-remotemailbox user@domain.com -archive
+
+# OR
+
+Set-ADUser $USER -Replace @{msExchRemoteRecipientType='3'}   # ProvisionMailbox, ProvisionArchive 
 
 # Reference
 # https://answers.microsoft.com/en-us/msoffice/forum/msoffice_o365admin-mso_exchon-mso_o365b/recipient-type-values/7c2620e5-9870-48ba-b5c2-7772c739c651
 
 # msExchRemoteRecipientType
 # enable-mailbox USER always with -remoteroutingaddress alias@tenant.mail.onmicrosoft.com (shortened for overview) (enable-Archive without)
-
+<#
 1	ProvisionMailbox                       = enable-mailbox USER                                                                     (PROVISION)
 2	ProvisionArchive (On-Prem Mailbox)     = enable-mailbox USER -remotearchive -archivedomain tenant.mail.onmicrosoft.com           (PROVISION remote archive)
 3	ProvisionMailbox, ProvisionArchive     = Enable-remotemailbox USER AND Enable-remotemailbox USR -archive                         (PROVISION)
@@ -46,3 +78,4 @@ enable-remotemailbox user@domain.com -archive
 100	Migrated, SharedMailbox                            = Enable-remotemailbox USER -SHARED                                           (Migrated)
 102	ProvisionArchive, Migrated, SharedMailbox          = Enable-remotemailbox USER -SHARED    AND  Enable-remotemailbox USR -archive (Migrated)
 116	Migrated, DeprovisionArchive, SharedMailbox        = Enable-remotemailbox USER -SHARED    AND Disable-remotemailbox USR -archive (Migrated)
+#>
